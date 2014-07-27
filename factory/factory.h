@@ -8,13 +8,13 @@
 //this class is the interface that all factories for concrete implementations need to adhere to
 template<typename INTERFACE>
 struct ifactory{
-	virtual INTERFACE* create() = 0;
+	virtual INTERFACE* create() = 0; //signature of ctor determines this
 };
 
 //concrete factories can just be built from this template
 template<typename IMPL,typename INTERFACE>
 struct factory : public ifactory<INTERFACE> {
-	virtual INTERFACE* create(){
+	virtual INTERFACE* create(){//signature of ctor determines this
 		return new IMPL();
 	};
 };
@@ -23,13 +23,13 @@ struct factory : public ifactory<INTERFACE> {
 //it holds a map: string->concrete factory as ifactory
 //to which we can add and retrieve.
 template<typename INTERFACE>
-struct implmanager{
-	static implmanager& instance(){
-		static implmanager<INTERFACE> instance;
+struct interfacefactory{
+	static interfacefactory& instance(){
+		static interfacefactory<INTERFACE> instance;
 		return instance;
 	}
 	void add(const std::string& impl,ifactory<INTERFACE>* fac){implmap[impl] = fac;}
-	INTERFACE* create(const std::string& impl){
+	INTERFACE* create(const std::string& impl){//signature of ctor determines this
 		auto i = implmap.find(impl);
 		if(i!=implmap.end()){return implmap[impl]->create();}
 		std::cout << "implementation " << impl << " not found" << std::endl;
@@ -44,7 +44,7 @@ private:
 template<typename IMPL,typename INTERFACE>
 struct register_impl{
 	register_impl(const std::string impl){
-		implmanager<INTERFACE>::instance().add(impl,new factory<IMPL,INTERFACE>);
+		interfacefactory<INTERFACE>::instance().add(impl,new factory<IMPL,INTERFACE>);
 	}
 };
 
