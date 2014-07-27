@@ -18,5 +18,5 @@ int main(){
 	interface* i2 = m.create("impl2");
 	if(i2) i2->execute();
 
-	return 1;
+	return 0;
 }
