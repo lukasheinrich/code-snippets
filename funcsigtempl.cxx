@@ -39,11 +39,6 @@ struct object{
 };
 
 
-
-void func(int i,double d){
-	std::cout << "hello there " << i << " and " << d << std::endl;
-}
-
 int main(){
 	factory<object* (int, double)> f;
 
