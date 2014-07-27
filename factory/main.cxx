@@ -15,15 +15,9 @@
 
 int main(){
 	auto m = interfacefactory<interface>::instance();
-	interface* i1 = m.create("impl1");
-	if(i1) i1->execute();
-
-	interface* i2 = m.create("impl2");
-	if(i2) i2->execute();
-
-	interface* i3 = m.create("impl3");
-	if(i3) i3->execute();
-
-
+	for(auto i : {"impl1","impl2","impl3"}){
+		auto impl = m.create(i);
+		if(impl) impl->execute();		
+	}
 	return 0;
 }
