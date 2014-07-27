@@ -27,10 +27,8 @@ template<typename T> struct pointer2type<T*>{typedef T type;};
 template<typename R,typename A1, typename A2>
 struct factory<R (A1,A2)>{
 	R (*member)(A1,A2);
-	static R create(A1 a1,A2 a2){return new typename pointer2type<R>::type(a1,a2);}
+	static R Func(A1 a1,A2 a2){return new typename pointer2type<R>::type(a1,a2);}
 };
-
-
 
 struct object{
 	object(int i,double d){m_int = i;m_double = d;}
@@ -42,9 +40,9 @@ struct object{
 int main(){
 	factory<object* (int, double)> f;
 
-	f.member = &factory<object* (int, double)>::create;
+	f.member = &factory<object* (int, double)>::Func;
 
-	object* o = f.create(2,3.14);
+	object* o = f.Func(2,3.14);
 	
 	std::cout << o->m_int << std::endl;
 	std::cout << o->m_double << std::endl;
