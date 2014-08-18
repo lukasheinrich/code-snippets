@@ -12,3 +12,7 @@ provinfos = [pyAMI.query.get_dataset_info(ami,k[0]) for i,k in provenance.iterit
 #just a set of all tags used.. order not preserved 
 amitags = set(itertools.chain(*[p.info.get('version','').split('_') for p in provinfos]))
 print amitags
+
+#even better
+configtags = pyAMI.query.get_dataset_info(ami,dataset).info['version']
+pyAMI.query.get_configtags(ami,configtags)
