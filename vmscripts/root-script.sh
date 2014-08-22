@@ -15,8 +15,6 @@ set -e
 # visudo #(add ciserver to sudoers, optional)
 
 
-nano 
-add this:
 echo CVMFS_REPOSITORIES=atlas.cern.ch,atlas-condb.cern.ch,sft.cern.ch >> /etc/cvmfs/default.local
 echo CVMFS_CACHE_BASE=/var/cache/cvmfs >> /etc/cvmfs/default.local
 echo CVMFS_QUOTA_LIMIT=10000 >> /etc/cvmfs/default.local
