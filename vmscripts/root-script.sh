@@ -27,6 +27,10 @@ cvmfs_config chksetup
 mkdir -p /var/cache/cvmfs
 mkdir -p /var/cache/cvmfs/shared
 
+chown cvmfs:cvmfs /var/cache/cvmfs
+chown cvmfs:cvmfs /var/cache/cvmfs/shared
+chmod 700 /var/cache/cvmfs
+
 mkdir -p /afs
 /sbin/chkconfig afs on
 /sbin/service afs start
