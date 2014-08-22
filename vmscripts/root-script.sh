@@ -22,11 +22,15 @@ echo CVMFS_QUOTA_LIMIT=10000 >> /etc/cvmfs/default.local
 #comment following out if we are outside of cern and cannot reach ca-proxy.cern.ch
 #echo CVMFS_HTTP_PROXY="http://ca-proxy.cern.ch:3128" >> /etc/cvmfs/default.local
 
-cvmfs_config reload
-cvmfs_config chksetup
-
 mkdir -p /var/cache/cvmfs
 mkdir -p /var/cache/cvmfs/shared
+
+chown cvmfs:cvmfs /var/cache/cvmfs
+chown cvmfs:cvmfs /var/cache/cvmfs/shared
+chmod 700 /var/cache/cvmfs
+
+cvmfs_config reload
+cvmfs_config chksetup
 
 mkdir -p /afs
 /sbin/chkconfig afs on
