@@ -2,9 +2,11 @@
 #
 # This is the bootsrap script for a new user to setup an
 # environment for physics analysis on top of a fresh
-# CernVM image. Tested on this minimal contextualization:
+# CernVM image: ucernvm-prod.1.18-2.cernvm.x86_64.iso
+# Tested on this minimal contextualization:
 # https://cernvm-online.cern.ch/context/view/261a48a9385b46dd81fc0da18a68a88d/plain
 #
+
 
 # fail immediately on any error
 set -e
