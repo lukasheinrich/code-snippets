@@ -3,7 +3,7 @@
 # This is the bootsrap script to checkout the analysis
 # Tested on this minimal contextualization:
 # https://cernvm-online.cern.ch/context/view/261a48a9385b46dd81fc0da18a68a88d/plain
-# on top of this image: ucernvm-prod.1.18-2.cernvm.x86_64.iso
+# on top of this image: ucernvm-prod.1.18-2.cernvm.x86_64.iso (CernVM 3.3.0.6)
 #
 
 # fail immediately on any error
