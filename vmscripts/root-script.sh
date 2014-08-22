@@ -24,11 +24,11 @@ echo CVMFS_QUOTA_LIMIT=10000 >> /etc/cvmfs/default.local
 cvmfs_config reload
 cvmfs_config chksetup
 
-mkdir /var/cache/cvmfs
-mkdir /var/cache/cvmfs/shared
+mkdir -p /var/cache/cvmfs
+mkdir -p /var/cache/cvmfs/shared
 
-mkdir /afs
+mkdir -p /afs
 /sbin/chkconfig afs on
 /sbin/service afs start
 
-yum install bzr
+yum --assumeyes install bzr
