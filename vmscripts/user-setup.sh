@@ -10,7 +10,7 @@
 set -e
 
 #### INSTALL PYTHON 2.7
-mkdir ~/tools && cd $HOME/tools
+mkdir -p ~/tools && cd $HOME/tools
 curl https://www.python.org/ftp/python/2.7.8/Python-2.7.8.tgz | tar -xzvf -
 cd Python-2.7.8
 ./configure --prefix=$HOME/tools/local
@@ -35,7 +35,7 @@ echo 'source $HOME/tools/local/bin/virtualenvwrapper.sh' >> $HOME/env.sh
 ##PHYSICS
 
 ### Rivet HepMC and co
-mkdir ~/heptools && cd ~/heptools
+mkdir -p ~/heptools && cd ~/heptools
 wget http://rivet.hepforge.org/hg/bootstrap/raw-file/2.1.2/rivet-bootstrap
 chmod +x rivet-bootstrap
 ./rivet-bootstrap
