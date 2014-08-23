@@ -9,18 +9,18 @@
 # fail immediately on any error
 source env.sh                                                                                 
 
-(git clone https://github.com/lukasheinrich/threebody.git ~/threebody                          )|| return
-(cd ~/threebody                                                                                )|| return
+git clone https://github.com/lukasheinrich/threebody.git ~/threebody                          || return
+cd ~/threebody                                                                                || return
 
-(mkvirtualenv threebody --system-site-packages                                                 )|| return
-(workon threebody                                                                              )|| return
-(HEPMCPATH=$HOME/heptools/local pip install --editable $PWD --process-dependency-links         )|| return
-(cd workflow                                                                                   )|| return
-(./waf configure                                                                               )|| return
+mkvirtualenv threebody                                                                        || return
+workon threebody                                                                              || return
+HEPMCPATH=$HOME/heptools/local pip install --editable $PWD --process-dependency-links         || return
+cd workflow                                                                                   || return
+./waf configure                                                                               || return
 
-(echo "analysis is setup.. try one of these: "                                                 )|| return
-(echo ./waf --targets=mcviz.svg                                                                )|| return
-(echo "if we want to run athena do this: "                                                     )|| return
-(echo setupATLAS                                                                               )|| return
-(echo asetup 18.1.0,here                                                                       )|| return
-(echo ./waf --targets=recorun/aod.pool.root                                                    )|| return
+echo "analysis is setup.. try one of these: "                                                 || return
+echo ./waf --targets=mcviz.svg                                                                || return
+echo "if we want to run athena do this: "                                                     || return
+echo setupATLAS                                                                               || return
+echo asetup 18.1.0,here                                                                       || return
+echo ./waf --targets=recorun/aod.pool.root                                                    || return
