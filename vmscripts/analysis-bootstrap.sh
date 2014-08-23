@@ -7,22 +7,20 @@
 #
 
 # fail immediately on any error
-set -e
+(source env.sh                                                                                 )|| return
 
-source env.sh
+(git clone https://github.com/lukasheinrich/threebody.git ~/threebody                          )|| return
+(cd ~/threebody                                                                                )|| return
 
-git clone https://github.com/lukasheinrich/threebody.git ~/threebody
-cd ~/threebody
+(mkvirtualenv threebody --system-site-packages                                                 )|| return
+(workon threebody                                                                              )|| return
+(HEPMCPATH=$HOME/heptools/local pip install --editable $PWD --process-dependency-links         )|| return
+(cd workflow                                                                                   )|| return
+(./waf configure                                                                               )|| return
 
-mkvirtualenv threebody --system-site-packages
-workon threebody
-HEPMCPATH=$HOME/heptools/local pip install --editable $PWD --process-dependency-links
-cd workflow
-./waf configure
-
-echo "analysis is setup.. try one of these: "
-echo ./waf --targets=mcviz.svg
-echo "if we want to run athena do this: "
-echo setupATLAS
-echo asetup 18.1.0,here
-echo ./waf --targets=recorun/aod.pool.root
+(echo "analysis is setup.. try one of these: "                                                 )|| return
+(echo ./waf --targets=mcviz.svg                                                                )|| return
+(echo "if we want to run athena do this: "                                                     )|| return
+(echo setupATLAS                                                                               )|| return
+(echo asetup 18.1.0,here                                                                       )|| return
+(echo ./waf --targets=recorun/aod.pool.root                                                    )|| return
