@@ -13,7 +13,9 @@ source $HOME/env.sh
 (cd ~/threebody                                                                                )|| return
 
 (mkvirtualenv threebody --system-site-packages                                                 )|| return
-(workon threebody                                                                              )|| return
+
+workon threebody                                                                             
+
 (HEPMCPATH=$HOME/heptools/local pip install --editable $PWD --process-dependency-links         )|| return
 (cd workflow                                                                                   )|| return
 (./waf configure                                                                               )|| return
