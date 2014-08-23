@@ -7,7 +7,7 @@
 #
 
 # fail immediately on any error
-source env.sh                                                                                 
+source $HOME/env.sh                                                                                 
 
 (git clone https://github.com/lukasheinrich/threebody.git ~/threebody                          )|| return
 (cd ~/threebody                                                                                )|| return
