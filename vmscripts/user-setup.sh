@@ -28,7 +28,7 @@ wget https://bootstrap.pypa.io/get-pip.py
 $HOME/tools/local/bin/python get-pip.py
 
 $HOME/tools/local/bin/pip install IPython
-
+$HOME/tools/local/bin/pip install --upgrade virtualenv
 $HOME/tools/local/bin/pip install virtualenvwrapper
 source $HOME/tools/local/bin/virtualenvwrapper.sh
 echo 'source $HOME/tools/local/bin/virtualenvwrapper.sh' >> $HOME/env.sh
