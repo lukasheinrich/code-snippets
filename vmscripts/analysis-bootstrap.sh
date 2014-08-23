@@ -1,4 +1,4 @@
-#!/bin/zsh
+#!/bin/echo "run this with source, please"
 #
 # This is the bootsrap script to checkout the analysis
 # Tested on this minimal contextualization:
