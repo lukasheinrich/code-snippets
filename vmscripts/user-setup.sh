@@ -13,6 +13,8 @@ set -e
 
 #compile with gcc48
 source /opt/rh/devtoolset-2/enable
+echo 'source /opt/rh/devtoolset-2/enable' >> $HOME/env.sh
+
 
 #### INSTALL PYTHON 2.7
 mkdir -p ~/tools && cd $HOME/tools
