@@ -38,7 +38,7 @@ echo 'source $HOME/tools/local/bin/virtualenvwrapper.sh' >> $HOME/env.sh
 
 ### Rivet HepMC and co
 mkdir -p ~/heptools && cd ~/heptools
-wget http://rivet.hepforge.org/hg/bootstrap/raw-file/2.1.2/rivet-bootstrap
+wget http://rivet.hepforge.org/hg/bootstrap/raw-file/2.2.0/rivet-bootstrap
 chmod +x rivet-bootstrap
 ./rivet-bootstrap
 source $HOME/heptools/Rivet-2.1.2/rivetenv.sh
