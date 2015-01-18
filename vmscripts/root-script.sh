@@ -36,4 +36,6 @@ mkdir -p /afs
 /sbin/chkconfig afs on
 /sbin/service afs start
 
+#compile with gcc48
+source /opt/rh/devtoolset-2/enable
 yum --assumeyes install bzr
