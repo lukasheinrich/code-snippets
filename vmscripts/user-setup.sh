@@ -11,6 +11,9 @@
 # fail immediately on any error
 set -e
 
+#compile with gcc48
+source /opt/rh/devtoolset-2/enable
+
 #### INSTALL PYTHON 2.7
 mkdir -p ~/tools && cd $HOME/tools
 curl https://www.python.org/ftp/python/2.7.8/Python-2.7.8.tgz | tar -xzvf -
