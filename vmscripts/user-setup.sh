@@ -46,8 +46,8 @@ mkdir -p ~/heptools && cd ~/heptools
 wget http://rivet.hepforge.org/hg/bootstrap/raw-file/2.2.0/rivet-bootstrap
 chmod +x rivet-bootstrap
 ./rivet-bootstrap
-source $HOME/heptools/Rivet-2.1.2/rivetenv.sh
-echo 'source $HOME/heptools/Rivet-2.1.2/rivetenv.sh' >> $HOME/env.sh
+source $HOME/heptools/Rivet-2.2.1/rivetenv.sh
+echo 'source $HOME/heptools/Rivet-2.2.1/rivetenv.sh' >> $HOME/env.sh
 
 ### Madgraph
 bzr branch lp:~maddevelopers/mg5amcnlo/1.5.10 madgraph-1.5.10
