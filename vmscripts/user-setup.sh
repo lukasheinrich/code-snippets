@@ -19,7 +19,7 @@ echo 'source /opt/rh/devtoolset-2/enable' >> $HOME/env.sh
 mkdir -p ~/tools && cd $HOME/tools
 curl https://www.python.org/ftp/python/2.7.8/Python-2.7.8.tgz | tar -xzvf -
 cd Python-2.7.8
-./configure --prefix=$HOME/tools/local
+./configure --prefix=$HOME/tools/local --enable-shared
 make -j4
 make install
 cd ~/tools
