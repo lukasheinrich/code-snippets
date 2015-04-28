@@ -1,5 +1,6 @@
 #!/bin/zsh
 
+set -e
 QUEUE=$1
 
 source ~/env.sh
