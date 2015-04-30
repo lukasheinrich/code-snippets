@@ -39,3 +39,4 @@ mkdir -p /afs
 #compile with gcc48
 source /opt/rh/devtoolset-2/enable
 yum --assumeyes install bzr
+yum --assumeyes install graphviz-devel
