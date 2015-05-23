@@ -5,10 +5,13 @@
 #include <memory>
 #include <iostream>
 
+#include <boost/variant.hpp>
+
 typedef uint32_t te_id_type;
 typedef uint16_t sub_index_type;
 typedef uint32_t index_type;
 typedef uint32_t class_id_type;      
+sub_index_type invalid_sub_index = 999;
 
 struct BaseHolder{
 public:
@@ -20,6 +23,7 @@ public:
   class_id_type typeClid() const {return m_clid;}
   sub_index_type subTypeIndex() const {return m_subtypeindex;}
   std::string label() const { return m_label;}
+
 private:
   class_id_type m_clid;
   sub_index_type m_subtypeindex;
@@ -34,13 +38,12 @@ public:
   bool registerHolder(const std::shared_ptr<BaseHolder>& holder);
 
   template<typename T = BaseHolder>
-  T* getHolder(class_id_type clid, sub_index_type subtypeindex){    
-    return getCastHolder<T>(m_holderByClidAndIndex[clid][subtypeindex].get());
+  T* getHolder(class_id_type clid, boost::variant<sub_index_type,std::string> stiOrLabel){    
+    return getCastHolder<T>(m_holderByClidAndIndex[clid][getIndex(clid,stiOrLabel)].get());
   }
 
-  template<typename T = BaseHolder>
-  T* getHolder(class_id_type clid, const std::string& label){    
-    return getCastHolder<T>(m_holderByClidAndLabel[clid][label].get());
+  sub_index_type getIndex(class_id_type clid, const boost::variant<sub_index_type,std::string>& stiOrLabel){
+    return boost::apply_visitor(HolderStructure::subTypeVisitor(m_lookupSubIndex[clid]), stiOrLabel);    
   }
   
   // HolderType* getHolderForFeature(const TriggerElement::FeatureAccessHelper& fea){
@@ -60,14 +63,32 @@ private:
     return cast_holder;
   }
 
+
   typedef std::map<sub_index_type, std::shared_ptr<BaseHolder> > IndexToHolderMap;
   typedef std::map<std::string, std::shared_ptr<BaseHolder> > LabelToHolderMap;
+  typedef std::map<std::string,sub_index_type> LabelToSubIndexMap;
+  
+  class subTypeVisitor : public boost::static_visitor<sub_index_type>{
+  public:
+    subTypeVisitor(const LabelToSubIndexMap& lookup):m_lookup(lookup){}
+    sub_index_type operator()(sub_index_type sti) const {return sti;}
+    sub_index_type operator()(const std::string& label) const {
+      auto it = m_lookup.find(label);
+      return (it!=m_lookup.end()) ? it->second : invalid_sub_index;
+    }
+  private:
+    const LabelToSubIndexMap& m_lookup;
+  };
 
   std::map<class_id_type, IndexToHolderMap> m_holderByClidAndIndex;
   std::map<class_id_type, LabelToHolderMap> m_holderByClidAndLabel;
 
   std::map<class_id_type, std::map<sub_index_type, std::string> > m_lookupLabels;
-  std::map<class_id_type, std::map<std::string, sub_index_type> > m_lookupSubIndex;
+
+  std::map<class_id_type, LabelToSubIndexMap >  m_lookupSubIndex;
+
+
+
 };
 
 bool HolderStructure::registerHolder(const std::shared_ptr<BaseHolder>& holder){ 
@@ -140,13 +161,13 @@ int main(){
 
   std::cout << "now check" << std::endl;
   
-  auto holder1 = holderstorage.getHolder(12345,1);
+  auto holder1 = holderstorage.getHolder(12345,"first 12345");
   std::cout << holder1->typeClid() << "/" << holder1->label() << "/" << holder1->subTypeIndex() << std::endl;
 
   holderstorage.getHolder<IHolder>(12345,1)->what();
   holderstorage.getHolder<TypedHolder<double> >(12345,1)->say(3.141);
   holderstorage.getHolder<TypedHolder<int> >(9876,0)->say(3);
-  holderstorage.getHolder<TypedHolder<std::string> >(4567,0)->say("hello");
+  holderstorage.getHolder<TypedHolder<std::string> >(4567,"zeroth 4567")->say("hello");
   
   return 0;
 }
