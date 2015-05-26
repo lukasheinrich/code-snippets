@@ -1,0 +1,43 @@
+latebinding.cxx:20:16: error: member reference type 'latelink<dummytype>' (aka 'GetLinkType<FeatureType, ContainerType>') is not a pointer
+    feat.link()->say_hello();
+    ~~~~~~~~~~~^
+latebinding.cxx:38:3: note: in instantiation of function template specialization 'testFeatures<FeatureType>' requested here
+  testFeatures(tdt.flattenedContainerFeature<ContainerType>());
+  ^
+latebinding.cxx:20:16: note: did you mean to use '.' instead?
+    feat.link()->say_hello();
+               ^~
+               .
+latebinding.cxx:21:17: error: no member named 'say_something' in 'GetLinkType<FeatureType, ContainerType>'
+    feat.link().say_something();
+    ~~~~~~~~~~~ ^
+latebinding.cxx:24:32: error: no viable conversion from 'latelink<dummytype>' (aka 'GetLinkType<FeatureType, ContainerType>') to 'ElementLink<ContainerType>'
+    ElementLink<ContainerType> a_link = feat.link();
+                               ^        ~~~~~~~~~~~
+./ElementLink.h:5:8: note: candidate constructor (the implicit copy constructor) not viable: no known conversion from 'latelink<dummytype>' (aka 'GetLinkType<FeatureType, ContainerType>') to 'const ElementLink<ContainerType> &' for 1st argument
+struct ElementLink{
+       ^
+./ElementLink.h:5:8: note: candidate constructor (the implicit move constructor) not viable: no known conversion from 'latelink<dummytype>' (aka 'GetLinkType<FeatureType, ContainerType>') to 'ElementLink<ContainerType> &&' for 1st argument
+struct ElementLink{
+       ^
+In file included from latebinding.cxx:5:
+./Feature.h:49:58: error: no type named 'container_type' in 'GetLinkType<FeatureType, ContainerType>'
+    typedef LinkHolder_with_Link<U,typename latelink<T>::container_type> feat_link;    
+                                   ~~~~~~~~~~~~~~~~~~~~~~^~~~~~~~~~~~~~
+./Feature.h:59:24: note: in instantiation of function template specialization 'FeatureAdaptor<FeatureType>::operator GetLinkType<GetLinkType<FeatureType, ContainerType> >' requested here
+    return latelink<_>(*this);
+                       ^
+./Feature.h:79:36: note: in instantiation of function template specialization 'FeatureAdaptor<FeatureType>::operator-><dummytype>' requested here
+    return FeatureAdaptor<U>(this).operator->();
+                                   ^
+latebinding.cxx:20:10: note: in instantiation of function template specialization 'Feature<FeatureType>::link<dummytype>' requested here
+    feat.link()->say_hello();
+         ^
+latebinding.cxx:38:3: note: in instantiation of function template specialization 'testFeatures<FeatureType>' requested here
+  testFeatures(tdt.flattenedContainerFeature<ContainerType>());
+  ^
+In file included from latebinding.cxx:5:
+./Feature.h:50:20: error: 'int' is not a class
+    auto myself  = dynamic_cast<feat_link*>(m_feature->linkholder());
+                   ^           ~~~~~~~~~~~~
+5 errors generated.
