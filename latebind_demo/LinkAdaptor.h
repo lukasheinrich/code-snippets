@@ -3,11 +3,11 @@
 
 #include "LinkHolder.h"
 
-// The LinkAdaptor class basically deals with the Athena/ASG ambiguity
-// in the Athena case we have the full EDM type information so we
-// can deduce what the link type should be. While in the ASG case
-// we use a trick to deduce it via a template parameter to the 
-// function-style casting operator
+// The LinkAdaptor class basically just holds the typeless link
+// pointer. some way or another it will get a call to get<T>
+// where T will be the link type. i.e. DataLink<Container>
+// or ElementLink<Container> with this we can cast down to
+// LinkHolder<U,ContainerType> and get the link.
 
 template<typename U>
 struct LinkAdaptor{
