@@ -1,8 +1,5 @@
 #ifndef LINKHOLDER_H
 #define LINKHOLDER_H
-
-// The LinkHolder class just holds either ElementLinks or DataLinks
-
 #include "ElementLink.h"
 #include "DataLink.h"
 #include <memory>
@@ -24,8 +21,7 @@ struct LinkHolderBase{
   virtual ~LinkHolderBase(){}
 };
 
-// simple class to hold a ptr to 
-// an element link or data link
+// The LinkHolder class just holds either ElementLinks or DataLinks
 template<typename U,typename C>
 struct LinkHolder :
   public std::shared_ptr<typename LinkType<U,C>::type>,
@@ -33,6 +29,4 @@ struct LinkHolder :
   typedef typename LinkType<U,C>::type link_type;
   LinkHolder(link_type* p) : std::shared_ptr<link_type>(p){;}
 };
-
-
 #endif
