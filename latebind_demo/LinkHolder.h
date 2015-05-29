@@ -5,14 +5,15 @@
 
 #include "ElementLink.h"
 #include "DataLink.h"
+#include <memory>
 
 template<typename U, typename C>
-struct GetLinkType;
+struct LinkType;
 
 template<typename U, typename C>
-struct GetLinkType{ typedef ElementLink<C> type; };
+struct LinkType{ typedef ElementLink<C> type; };
 
-template<typename C> struct GetLinkType<C,C>{ typedef DataLink<C> type; };
+template<typename C> struct LinkType<C,C>{ typedef DataLink<C> type; };
 
 // LinkHolderBase is just a type agnostic
 // base class for LinkHolder_with_Link
@@ -26,13 +27,11 @@ struct LinkHolderBase{
 // simple class to hold a ptr to 
 // an element link or data link
 template<typename U,typename C>
-struct LinkHolder : public LinkHolderBase{
-  typedef typename GetLinkType<U,C>::type link_type;
-  LinkHolder(link_type* link) : m_link(link) {;}
-  link_type* get(){
-    return m_link;
-  }
-  link_type* m_link;
+struct LinkHolder :
+  public std::shared_ptr<typename LinkType<U,C>::type>,
+  public LinkHolderBase {
+  typedef typename LinkType<U,C>::type link_type;
+  LinkHolder(link_type* p) : std::shared_ptr<link_type>(p){;}
 };
 
 

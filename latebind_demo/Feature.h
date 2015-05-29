@@ -19,17 +19,17 @@ struct Feature2Container;
 #endif
 
 template<typename ExplicitLink, typename T>
-struct LinkType{
+struct resolve{
   // if explicit link type is given, run with it.
   typedef ExplicitLink type;
 };
 
 template<typename T>
-struct LinkType<struct _,T>{
+struct resolve<struct _,T>{
   // if explicit link is dummytype, we can try to see if
   // EDM info is available
-  typedef typename Feature2Container<T>::type container_type;
-  typedef typename GetLinkType<T,container_type>::type type;
+  using container_type = typename Feature2Container<T>::type;
+  typedef typename LinkType<T,container_type>::type type;
 };
 
 // This is a Feature Class that is usable in both ASG and Athena
@@ -43,7 +43,7 @@ struct Feature{
 
   virtual ~Feature(){}
 
-  template<typename _> using latelink = typename LinkType<_,U>::type;
+  template<typename _> using latelink = typename resolve<_,U>::type;
 
   template<typename _ = struct _>
   #ifdef EDM_INFO_PRESENT
