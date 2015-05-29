@@ -1,40 +1,33 @@
 #include <iostream>
-
+//forward declare the map (no definition!)
 template<typename T>
-struct Default;
+struct TypeMap;
 
-// template<typename T>
-// struct Default{
-//   typedef double type;
-// };
-
-template<typename dummy, typename T>
-struct latebind{
-  typedef typename Default<T>::type type;
+//the late resolution mechanism
+template<typename T,typename _>
+struct lateresolve{
+  typedef typename TypeMap<T>::type type;
 };
-
-struct dummytype{};
 
 template<typename U>
 struct feature{
-
-  template<typename dummy = dummytype>
-  typename latebind<dummy,U>::type hello(){
-    std::cout << "hello with dummy" << std::endl;
-    return 2.3;
+  template<typename _> using return_type = typename lateresolve<U,_>::type;
+  template<typename _ = struct _>
+  return_type<_> hello(){
+    std::cout << "resolved type!" << std::endl;
+    return return_type<_>();
   }
-
-  void say(){
-    std::cout << "we don't now what Default<U> is" << std::endl;
-  }
-  
 };
 
 struct FeatureType{};
+// struct ContainerType;
+// template<typename T>
+// struct TypeMap{
+//   typedef ContainerType type;
+// };
+// struct ContainerType{ void say(){std::cout<<"container!"<<std::endl;}};
 
 int main(){
   feature<FeatureType> f;
-  f.say();
-  
-  // f.hello();
+  // f.hello().say();
 }
