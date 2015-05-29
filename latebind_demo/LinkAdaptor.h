@@ -16,11 +16,11 @@ struct LinkAdaptor{
   template<typename T>
   T get(){
     typedef LinkHolder<U,typename T::container_type> feat_link;    
-    auto myself  = dynamic_cast<feat_link*>(m_link);
-    if(!myself){
+    auto typed_link_holder  = dynamic_cast<feat_link*>(m_link);
+    if(!typed_link_holder){
       std::cout << "WARNING: Cast failed;" << std::endl;
     }
-    return *(myself->get());
+    return *(typed_link_holder->get());
   }
   template<typename T>
   operator T() {

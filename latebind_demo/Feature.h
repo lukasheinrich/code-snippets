@@ -40,13 +40,11 @@ struct resolve<struct _,T>{
 template<typename U>
 struct Feature{
   Feature(const U* feature, LinkHolderBase* link = 0):m_feature(feature), m_link(link){;}
-
   virtual ~Feature(){}
 
-  template<typename _> using latelink = typename resolve<_,U>::type;
-
-  template<typename _ = struct _>
   #ifdef EDM_INFO_PRESENT
+  template<typename _> using latelink = typename resolve<_,U>::type;
+  template<typename _ = struct _>
   latelink<_> link() const {
     return LinkAdaptor<U>(m_link).template get<latelink<_> >();
   #else
@@ -57,8 +55,7 @@ struct Feature{
 
   const U* operator->() const {return m_feature;}
   
-  LinkHolderBase* const m_link;
-  
+  LinkHolderBase* m_link;
   const U* m_feature;
 };
 
