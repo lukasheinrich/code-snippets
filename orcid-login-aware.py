@@ -30,6 +30,7 @@ ORCID_APPID = 'YOURAPPID'
 ORCID_REDIRECT_URI = 'your_login_route.com/login' #should be pointing to the /login route
 ORCID_SECRET = 'YOURSECRET'
 
+
 @app.route('/login')
 def login():
   if not request.args.has_key('code'):
@@ -47,7 +48,7 @@ def login():
   user = User(orcid = login_details['orcid'], fullname = login_details['name'], authenticated = True)
   flask_login.login_user(user)
   
-  return redirect(url_for('/'))
+  return redirect(url_for('home'))
 
     
 @app.route("/logout")
@@ -65,7 +66,6 @@ def load_user(userid):
 @login_manager.unauthorized_handler
 def unauthorized():
     return 'sorry not authorized'
-
 
 @app.route("/loggedin")
 @flask_login.login_required
