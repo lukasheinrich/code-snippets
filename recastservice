@@ -1,0 +1,37 @@
+#!/bin/bash
+# chkconfig: 2345 60 80
+# description: initialization script to start RECAST plugin at boot
+
+# Source function library.
+. /etc/init.d/functions
+
+start() {
+    echo "Starting RECAST plugin"
+    su analysis -c 'cd /home/analysis && source user_data.sh && ./start_recast_service.sh $RECASTPLUGINDIR $RECASTQUEUE' || exit 1
+}
+
+stop() {
+    echo "Stopping RECAST plugin"
+    su analysis -c 'cd /home/analysis && source user_data.sh && ./stop_recast_service.sh $RECASTPLUGINDIR' || exit 1
+}
+
+case "$1" in 
+    start)
+       start
+       ;;
+    stop)
+       stop
+       ;;
+    restart)
+       stop
+       start
+       ;;
+    status)
+       # code to check status of app comes here 
+       # example: status program_name
+       ;;
+    *)
+       echo "Usage: $0 {start|stop|status|restart}"
+esac
+
+exit 0 
