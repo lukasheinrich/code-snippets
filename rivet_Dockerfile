@@ -1,0 +1,13 @@
+FROM python:2.7.7
+RUN pip install numpy matplotlib
+RUN apt-get update
+RUN apt-get -y install texlive-full
+RUN apt-get -y install wget
+RUN wget http://rivet.hepforge.org/hg/bootstrap/raw-file/2.2.1/rivet-bootstrap
+RUN chmod +x rivet-bootstrap
+RUN ./rivet-bootstrap
+RUN apt-get -y install ImageMagick
+ENV LD_LIBRARY_PATH=/usr/src/python/local/lib:/usr/src/python/local/lib:/usr/src/python/local/lib:/usr/src/python/local/lib:/usr/src/python/local/lib
+ENV PATH=/usr/src/python/local/bin:/usr/src/python/local/lib/../bin:/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin
+ENV PYTHONPATH=/usr/src/python/local/lib/python2.7/site-packages:/usr/src/python/local/lib/python2.7/site-packages
+CMD rivet
