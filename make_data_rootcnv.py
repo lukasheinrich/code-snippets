@@ -24,8 +24,9 @@ def main():
   dn.Sumw2(0)
   dn.Write()
 
-  data1 = ROOT.TH1F('data1','data1',20,-5,5)
-  data1.FillRandom('gaus',1000)
+  data1 = ROOT.TH1F('data1','data1',2,0,2)
+  data1.SetBinContent(1,10.2)
+  data1.SetBinContent(2,19.7)
   data1.Sumw2(0)
   data1.Write()
 
