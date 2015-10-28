@@ -1,4 +1,4 @@
-//g++ -std=c++11 -o typed_matching_tool typed_matching_tool.cxx
+//g++ -std=c++11 -o tuple tuple.cxx
 #include <iostream>
 #include <vector>
 
@@ -56,6 +56,10 @@ namespace Registry{
   template<> struct typeMap<typeB>{typedef trigB type;};
   template<> struct typeMap<typeC>{typedef trigC type;};
 };
+
+template<typename... LAMBDATYPES> struct lambda_init_metric;
+
+template<typename... TYPES> lambda_init_metric<TYPES...> make_metric(TYPES... t){return lambda_init_metric<TYPES...>(t...);}
 
 
 //general purpose storage for a single type
@@ -135,7 +139,22 @@ struct tool{
     std::cout << "making distance matrix" << std::endl;
     std::cout << "size of recos: " << recs.size() << std::endl;
     std::cout << "size of trigs: " << trigs.size() << std::endl;
-    MatchMetrics m;
+
+//    MatchMetrics m;
+    auto m = make_metric(
+      [](const typeA& reco, const trigA trig) {
+        std::cout << "A-type metric reco: " << reco.ptA() << " trig: " << trig.pt() << std::endl;
+        return 8.3;
+      },
+      [](const typeB& reco, const trigB trig) {
+        std::cout << "B-type metric reco: " << reco.ptB() << " trig: " << trig.pt() << std::endl;
+        return 9.2;
+      },
+      [](const typeC& reco, const trigC& trig){
+        std::cout << "C-type metric reco: " << reco.ptC() << " trig: " << trig.pt() << std::endl;
+        return 0;
+      }
+    );
     
     for(auto r : recs){
       for(auto t : trigs){
@@ -179,31 +198,30 @@ struct tool{
   }
 };
 
-
-template<typename T>
-struct makeTrig{typedef typename Registry::typeMap<T>::type type;};
-
-template<typename... RECOTYPES> struct shit{
-  typedef std::tuple<typename makeTrig<RECOTYPES>::type...> trigtypes;
-};
-
-template<typename... TYPES> struct make_initlists{
-  typedef std::tuple<std::initializer_list<TYPES>...> initlists;
-};
-
-template<typename T>
+template<typename... LAMBDATYPES>
 struct lambda_init_metric{
-  lambda_init_metric(const T& lambda) : m_lambda(lambda){}
+  lambda_init_metric(const LAMBDATYPES&... lambdas) : m_lambdas(lambdas...){}
   template<typename RECO,typename TRIG>
-  double distance(const RECO& r, const TRIG& t){return select(r,t)(r,t);}
-
-  template<typename RECO,typename TRIG> T select(const RECO& r, const TRIG& t){
-    return (m_lambda(r,t), m_lambda);
+  double distance(const RECO& r, const TRIG& t){
+    constexpr static int bla(select<RECO,TRIG>());
+    return std::get<bla>(m_lambdas)(r,t);
   }
 
-  const T& m_lambda;
+  template<typename RECO,typename TRIG, int index = sizeof...(LAMBDATYPES)-1>
+  constexpr static typename std::enable_if<(index>0),int>::type select() {
+    typedef typename std::tuple_element<index,decltype(m_lambdas)>::type element_t;
+    typedef std::function<double (const RECO& r, const TRIG& t)> function_t;
+    return std::is_constructible<function_t,element_t>::value ? index : select<RECO,TRIG,index-1>();
+  }
+
+  template<typename RECO,typename TRIG, int index>
+  constexpr static typename std::enable_if<(index==0),int>::type select() {
+    typedef typename std::tuple_element<index,decltype(m_lambdas)>::type element_t;
+    typedef std::function<double (const RECO& r, const TRIG& t)> function_t;
+    return std::is_constructible<function_t,element_t>::value ? index : -1;
+  }
+  std::tuple<LAMBDATYPES...> m_lambdas;
 };
-template<typename T> lambda_init_metric<T> make_metric(T t){return lambda_init_metric<T>(t);}
 
 int main(){
   typeA a(1.3);
@@ -220,16 +238,15 @@ int main(){
   auto pc = &c;
   auto pd = &d;
   
-  auto metric = [](const typeA& reco, const trigA trig) -> double {
-    std::cout << "lambda A-type metric reco: " << reco.ptA() << " trig: " << trig.pt() << std::endl;
-    return 1.3;
-  };
-  // std::cout << "metric: " << typeid(any<decltype(metric)>::type).name() << std::endl;
+  auto m = make_metric(
+    [](const typeA& reco, const trigA trig) {return reco.ptA()+trig.pt();},
+    [](const typeB& reco, const trigB trig) {return reco.ptB()+trig.pt();},
+    [](const typeC& reco, const trigC trig) {return reco.ptC()+trig.pt();}
+  );
 
-  auto m = make_metric([](const typeA& reco, const trigA trig) {return reco.ptA() + trig.pt();});
   std::cout << m.distance(a,trigA()) << std::endl;
+  std::cout << m.distance(b,trigB()) << std::endl;
 
-  
   tool t;
   t.matchReco(make_reco({a,a2},{b,b2},{c}),"HLT_one_two");
   t.matchReco({a,a2},"HLT_one_two");
