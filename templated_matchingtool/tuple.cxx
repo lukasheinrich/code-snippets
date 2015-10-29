@@ -16,6 +16,21 @@ int main(){
   typeC c(70,71,72); 
   typeD d(80,81,82); 
   
+
+  MatchingTool t;
+  std::cout << "----------- MATCH SINGLE TYPE (DEFAULT METRICS) ------------ " << std::endl;
+  t.matchReco({a,a2},"HLT_one_two");
+
+
+  std::cout << "----------- MATCH TWO TYPES (DEFAULT METRICS) ------------ " << std::endl;
+  t.matchReco(make_reco({a,a2},{b}),"HLT_one_two");
+
+
+  std::cout << "----------- MATCH THREE TYPES (DEFAULT METRICS) ------------ " << std::endl;
+  t.matchReco(make_reco({a,a2},{b},{c}),"HLT_one_two");
+
+
+  std::cout << "----------- MATCH OVERRIDE METRICS ------------ " << std::endl;
   //override two of the thee metric definitions
   auto override = make_metric(
     [](const typeA& reco, const trigA trig) {
@@ -26,15 +41,13 @@ int main(){
       return reco.phiB()-trig.phi();
     }
   );
-
-  MatchingTool t;
-  std::cout << "----------- MATCH DEFAULT METRICS ------------ " << std::endl;
-  t.matchReco(make_reco({a,a2},{b,b2},{c}),"HLT_one_two");
-  std::cout << "----------- MATCH OVERRIDE METRICS ------------ " << std::endl;
   t.matchReco(make_reco({a,a2},{b,b2},{c}),"HLT_one_two",override);
+
+
   std::cout << "----------- MATCH OVERRIDE METRICS (IN-CALL DEFINITION) ------------ " << std::endl;
   //override type A, and type B metrics, use default metric for C
   t.matchReco(make_reco({a,a2},{b},{c}),"HLT_one_two",make_metric([](const typeA& reco, const trigA& trig){return 110.0;},
                                                                   [](const typeB& reco, const trigB& trig){return 120.0;}));
+
   std::cout << "--------------------------------- " << std::endl;
 };
