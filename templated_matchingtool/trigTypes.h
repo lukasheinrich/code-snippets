@@ -36,4 +36,14 @@ struct trigD{
   double m_eta;
   double m_phi;
 };
+
+struct trigAnotherA{
+  trigAnotherA(double pt = 10,double eta = 11,double phi = 12) : m_pt(pt),m_eta(eta),m_phi(phi) {}
+  double pt()const{return m_pt;}
+  double etaSpecial()const{return m_eta;}
+  double phi()const{return m_phi;}
+  double m_pt;
+  double m_eta;
+  double m_phi;
+};
 #endif
