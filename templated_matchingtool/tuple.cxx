@@ -54,7 +54,7 @@ int main(){
   );
   t.matchReco(make_reco({a,a2},{b,b2},{c}),"HLT_one_two",override);
   
-  std::cout << "----------- MATCH OVERRIDE METRICS (IN-CALL DEFINITION) ------------ " << std::endl;
+  std::cout << "----------- MATCH OVERRIDE METRICS (IN-CALL DEFINITION) and OVERRIDE TYPE ------------ " << std::endl;
   //override type A, and type B metrics, use default metric for C
   t.matchReco(make_reco({a,a2},{b},{c}),"HLT_one_two",
               make_metric(
@@ -64,6 +64,20 @@ int main(){
                 }
               ),
               make_map<OverrideMap::myMap>());
+
+  std::cout << "----------- MATCH OVERRIDE METRICS AND MAPPINGS PROVIDED ------------ " << std::endl;
+  //these could be provided as static objects by CP groups              
+  auto CP_group_metric = make_metric(
+    [](const typeA& reco, const trigAnotherA& trig){
+      std::cout << " in call override with custom type" << std::endl;
+      return reco.etaA()-trig.etaSpecial();
+  });
+  auto CP_group_mapping = make_map<OverrideMap::myMap>();
+
+  //and then be used by regular users
+  t.matchReco(make_reco({a,a2},{b},{c}),"HLT_one_two",CP_group_metric,CP_group_mapping);
+
+
   
   std::cout << "--------------------------------- " << std::endl;
 
