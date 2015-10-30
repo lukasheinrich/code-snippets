@@ -31,12 +31,11 @@ private:
     std::cout << "using reco->trig mapper: " << typeid(MAPPING).name() << std::endl; 
 
     typedef typename MAPPING::template map<T> mapping;
-
     typedef typename mapping::type trigType;
     const std::string feat_label = mapping::label();
+
     std::cout << "trigger type is: " << typeid(trigType).name() << std::endl;
     std::cout << "feature label is: " << feat_label << std::endl;
-
 
     std::vector<trigType> triggerObjs(recos.size());
     auto distance_matrix = makeDistanceMatrix(recos,triggerObjs,metrics); 

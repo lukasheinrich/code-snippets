@@ -63,7 +63,7 @@ int main(){
                   return reco.etaA()-trig.etaSpecial();
                 }
               ),
-              make_override<OverrideMap::myMap>());
+              make_map<OverrideMap::myMap>());
   
   std::cout << "--------------------------------- " << std::endl;
 

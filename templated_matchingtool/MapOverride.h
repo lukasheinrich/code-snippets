@@ -24,6 +24,6 @@ template <template<typename> class MAPONE,template<typename> class MAPTWO> struc
 };
 
 template<template <typename> class OVERRIDE>
-map_override<OVERRIDE,Registry::typeMap> make_override(){return map_override<OVERRIDE,Registry::typeMap>();}
+map_override<OVERRIDE,Registry::typeMap> make_map(){return map_override<OVERRIDE,Registry::typeMap>();}
 
 #endif
