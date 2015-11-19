@@ -1,3 +1,5 @@
+//make with g++ -std=c++11 -o brace_init_tuple brace_init_tuple.cxx
+
 #include <iostream>
 #include <vector>
 
