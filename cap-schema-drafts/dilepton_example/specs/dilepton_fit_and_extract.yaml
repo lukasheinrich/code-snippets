@@ -1,0 +1,29 @@
+# substep spec YAML
+substepname: dilepton_fit_and_extract.yaml
+command:
+  #this section described the command to be run
+  name: 'fitresults'
+  options:
+    - name: fitworkdir
+    - name: postfitworkdir
+    - name: histfitterarchive
+    - name: fitresultarchive
+    - name: fitresultyaml
+    - name: modelname
+  flags:
+    target: mode
+    allowed:
+      - exclusion
+      - discovery
+  arguments:
+    - name: inputroot
+environment:
+  #in general this section must describe everything needed to run the thing described by the command key
+  docker-image: 'lukasheinrich/dileptonanalysis'
+  shell-env: 'fitenv.sh'
+  required-resources: 
+    #this selects the volume mounts for docker or more generally the machine to run on (could be lxplus)
+    #or could generally correspond to requirements that certain shell-envs / interfaces are present
+    #or requirements that a machine has access to certain networks etc
+    - AFS
+    - CVMFS

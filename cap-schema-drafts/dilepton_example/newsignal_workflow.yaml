@@ -1,0 +1,27 @@
+- name: download
+  spec: grid_download
+  scheduler: capschedulers.common.inputaquisition:singleds_download
+- name: ntupling
+  spec: dilepton_minintuple
+  flags:
+    sample_type: mc
+    truth_include: truth
+    blind_state: unblinded
+    make_mini: makemini
+  dependencies:
+    - 'griddownload:download'
+  scheduler: capschedulers.susywg.ntuplingcodes:ntuple_from_download
+- name: prephf_yields
+  spec: dilepton_prephf_yields
+  dependencies:
+    - 'dilepton_minintuple:ntupling'
+  scheduler: capschedulers.susywg.dileptonanalysis:prephf_from_mini
+- name: fit
+  spec: dilepton_fit_and_extract
+  options:
+    histfitterarchive: /analysis_resources/fromscript.tgz
+  flags:
+    mode: exclusion
+  dependencies:
+    - 'dilepton_prephf_yields:prephf_yields'
+  scheduler: capschedulers.susywg.dileptonanalysis:fit_from_hftuple

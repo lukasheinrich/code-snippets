@@ -1,0 +1,25 @@
+# substep spec YAML
+substepname: grid_download
+command:
+  #this section described the command to be run
+  name: 'download-cli'
+  arguments:
+    - name: inputdataset
+    - name: downloaddir
+    - name: listfilename
+environment:
+  #in general this section must describe everything needed to run the thing described by the command key
+  docker-image: 'lukasheinrich/dileptonanalysis'  
+  shell-env: 'downloadenv.sh'
+  required-resources: 
+    #this selects the volume mounts for docker or more generally the machine to run on (could be lxplus)
+    #or could generally correspond to requirements that certain shell-envs / interfaces are present
+    #or requirements that a machine has access to certain networks etc
+    - GRID
+    - CVMFS
+    
+    
+## this spec roughly corresponds to the template:
+## 
+## docker run -v /grid_auth:/grid_auth -v /afs:/afs -v /cvmfs:/cvmfs \
+##    lukasheinrich/dileptonanalysis 'source downloadenv.sh && download-cli [inputdataset] [downloaddir] [listfilename]'

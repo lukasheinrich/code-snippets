@@ -1,0 +1,24 @@
+# substep spec YAML
+substepname: dilepton_prephf_yields.yaml
+command:
+  #this section described the command to be run
+  name: 'MakeNtuple'
+  options:
+    - name: efficiencyfile
+    - name: xsecfile
+    - name: modelName
+    - name: outputroot
+    - name: outputyields
+  flags:
+  arguments:
+    - name: inputroot
+environment:
+  #in general this section must describe everything needed to run the thing described by the command key
+  docker-image: 'lukasheinrich/dileptonanalysis'
+  shell-env: 'prehfenv.sh'
+  required-resources: 
+    #this selects the volume mounts for docker or more generally the machine to run on (could be lxplus)
+    #or could generally correspond to requirements that certain shell-envs / interfaces are present
+    #or requirements that a machine has access to certain networks etc
+    - AFS
+    - CVMFS

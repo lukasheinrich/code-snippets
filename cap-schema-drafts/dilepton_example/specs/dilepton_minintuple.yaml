@@ -1,0 +1,30 @@
+# substep spec YAML
+substepname: dilepton_minintuple
+command:
+  #this section described the command to be run
+  name: 'MakeNtuple'
+  options:
+    - name: max_syst
+      nargs: 1
+      default: 1
+    - name: filelist
+  flags:
+    - target: sample_type
+      allowed: ['mc','data']
+    - target: truth_include
+      allowed: ['truth']
+    - target: blind_state
+      allowed: ['unblinded','blinded']
+    - target: make_mini
+      allowed: ['makemini']
+  arguments:
+environment:
+  #in general this section must describe everything needed to run the thing described by the command key
+  docker-image: 'lukasheinrich/susy-ewk-ntupling'
+  shell-env: 'ntuplingenv.sh'
+  required-resources: 
+    #this selects the volume mounts for docker or more generally the machine to run on (could be lxplus)
+    #or could generally correspond to requirements that certain shell-envs / interfaces are present
+    #or requirements that a machine has access to certain networks etc
+    - AFS
+    - CVMFS
