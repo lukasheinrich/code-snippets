@@ -1,0 +1,25 @@
+Assumptions:
+ - substeps instances are built from subtep specs (as described in this YAML file). information can be supplied at three points
+   1) static information stored in YAML spec (stored in CAP) (e.g. command name, default values for paramaters)
+   2) workflow-scoped instance information (specifics workflows stored in CAP) (e.g. this particular steps is conceptually needed multiple times in a workflow, e.g. with different flags, say run ntupling for data/mc)
+       - this is given in the specific workflow instance stored in CAP
+   3) run-time-scoped instance information set by the concrete run-context  (actual files etc)
+        - values to build command
+        - instance attributes/properties (possibly mandated by slots)
+- for the first step in a workflow the the remaining instance information is completely provided by the global run-context
+- for all subsequent steps the runtime information can be completely provided by the instance information of the
+   determined by the global request context and the existing DAG at scheduling time
+
+the way a workflow is stored:
+ - a workflow in a collection of nodes and edges (dependencies)
+ - a node in a workflow is a substep instance (id: substepname/instancename) with some subset of instance information set
+ - a node has a list of dependencies (format: substepname/instancename)
+
+the way we process this
+a workflow needs to work on a machine that can fulfill the union of all requirements
+1. take global run request context and create empty DAG
+2. while remaining steps or DAG running:
+3.    process step:
+          if(depdendencies ready):
+               take scheduler of step and append DAG
+- the DAG will append nodes of a single type of adage task that can be fully specified by the filled instance yam and the existing DAG
