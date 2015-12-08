@@ -1,0 +1,6 @@
+{
+  "definition": {
+    "node_spec": "fit_node_spec"
+  },
+  "schema": "single_node_step"
+}

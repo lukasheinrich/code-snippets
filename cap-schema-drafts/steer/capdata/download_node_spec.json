@@ -1,0 +1,40 @@
+{
+  "definition": {
+    "arguments": [
+      {
+        "name": "inDS"
+      },
+      {
+        "name": "outList",
+        "type": "filepath"
+      },
+      {
+        "name": "outDir",
+        "type": "filepath"
+      }
+    ],
+    "name": "./download"
+  },
+  "environment": {
+    "definition": {
+      "docker_container": "lukasheinrich/download",
+      "env": null,
+      "resources": [
+        "GRID"
+      ]
+    },
+    "schema": "docker_encapsulated"
+  },
+  "outputs": [
+    "list_of_files"
+  ],
+  "publisher": {
+    "args": [],
+    "kwargs": {
+      "attribute": "outList",
+      "outputname": "list_of_files"
+    },
+    "name": "publishers:list_from_attribute_file"
+  },
+  "schema": "cli_app"
+}

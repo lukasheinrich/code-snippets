@@ -1,0 +1,139 @@
+[
+  {
+    "attributes": {
+      "inDS": "{dataset}",
+      "outDir": "{workdir}/download",
+      "outList": "{workdir}/files.list"
+    },
+    "dependencies": [],
+    "name": "download",
+    "scheduler": {
+      "args": [],
+      "kwargs": {
+        "nodename": "download_node"
+      },
+      "name": "schedulers:single_node_from_context"
+    },
+    "spec": "download_step_spec"
+  },
+  {
+    "attributes": [],
+    "dependencies": [
+      "download"
+    ],
+    "name": "ntupling",
+    "scheduler": {
+      "args": [],
+      "kwargs": {
+        "dependency": "download",
+        "nodename_template": "ntup_{index}",
+        "output_template": "{workdir}/ntup/out_{index}.root",
+        "outputkey": "list_of_files",
+        "to_input": "inroot",
+        "to_output": "outroot"
+      },
+      "name": "schedulers:map_from_dep_output"
+    },
+    "spec": "ntup_step_spec"
+  },
+  {
+    "attributes": {
+      "outfile": "{workdir}/merged_ntup.root"
+    },
+    "dependencies": [
+      "ntupling"
+    ],
+    "name": "merge_ntup",
+    "scheduler": {
+      "args": [],
+      "kwargs": {
+        "dependency": "ntupling",
+        "nodename": "merge_ntp",
+        "outputkey": "output",
+        "to_input": "infiles"
+      },
+      "name": "schedulers:reduce_from_dep_output"
+    },
+    "spec": "merge_step_spec"
+  },
+  {
+    "attributes": {
+      "outplotdir": "{workdir}/plotdir"
+    },
+    "dependencies": [
+      "merge_ntup"
+    ],
+    "name": "plot",
+    "scheduler": {
+      "args": [],
+      "kwargs": {
+        "dependency": "merge_ntup",
+        "nodename": "plot_ntup",
+        "outputkey": "output",
+        "to_input": "mergedinput"
+      },
+      "name": "schedulers:reduce_from_dep_output"
+    },
+    "spec": "plot_step_spec"
+  },
+  {
+    "attributes": [],
+    "dependencies": [
+      "ntupling"
+    ],
+    "name": "hftree",
+    "scheduler": {
+      "args": [],
+      "kwargs": {
+        "dependency": "ntupling",
+        "nodename_template": "hf_{index}",
+        "output_template": "{workdir}/hf/outhf_{index}.root",
+        "outputkey": "output",
+        "to_input": "inroot",
+        "to_output": "outhf"
+      },
+      "name": "schedulers:map_from_dep_output"
+    },
+    "spec": "hftree_step_spec"
+  },
+  {
+    "attributes": {
+      "outfile": "{workdir}/merged_hf.root"
+    },
+    "dependencies": [
+      "hftree"
+    ],
+    "name": "merge_hf",
+    "scheduler": {
+      "args": [],
+      "kwargs": {
+        "dependency": "hftree",
+        "nodename": "merge",
+        "outputkey": "output",
+        "to_input": "infiles"
+      },
+      "name": "schedulers:reduce_from_dep_output"
+    },
+    "spec": "merge_step_spec"
+  },
+  {
+    "attributes": {
+      "fitresults": "{workdir}/fitresults.yaml"
+    },
+    "dependencies": [
+      "merge_hf"
+    ],
+    "name": "fit",
+    "scheduler": {
+      "args": [],
+      "kwargs": {
+        "dependency": "merge_hf",
+        "nodename": "fit",
+        "outputkey": "output",
+        "to_input": "mergedinput"
+      },
+      "name": "schedulers:reduce_from_dep_output"
+    },
+    "spec": "fit_step_spec"
+  }
+]

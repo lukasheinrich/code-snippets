@@ -1,0 +1,34 @@
+{
+  "definition": {
+    "arguments": [
+      {
+        "name": "inroot"
+      },
+      {
+        "name": "outroot"
+      }
+    ],
+    "name": "./mk_ntup"
+  },
+  "environment": {
+    "definition": {
+      "docker_container": "lukasheinrich/ntupling",
+      "env": null,
+      "resources": [
+        "CVMFS"
+      ]
+    },
+    "schema": "docker_encapsulated"
+  },
+  "outputs": [
+    "output"
+  ],
+  "publisher": {
+    "args": [],
+    "kwargs": {
+      "output": "outroot"
+    },
+    "name": "publishers:from_attributes"
+  },
+  "schema": "cli_app"
+}

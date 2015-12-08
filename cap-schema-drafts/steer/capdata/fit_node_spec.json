@@ -1,0 +1,34 @@
+{
+  "definition": {
+    "arguments": [
+      {
+        "name": "mergedinput"
+      },
+      {
+        "name": "fitresults"
+      }
+    ],
+    "name": "./runfit.sh"
+  },
+  "environment": {
+    "definition": {
+      "docker_container": "lukasheinrich/dilepton_code",
+      "env": "fit.sh",
+      "resources": [
+        "GRID"
+      ]
+    },
+    "schema": "docker_encapsulated"
+  },
+  "outputs": [
+    "output"
+  ],
+  "publisher": {
+    "args": [],
+    "kwargs": {
+      "output": "fitresults"
+    },
+    "name": "publishers:from_attributes"
+  },
+  "schema": "cli_app"
+}

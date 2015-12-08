@@ -1,0 +1,34 @@
+{
+  "definition": {
+    "arguments": [
+      {
+        "name": "infiles"
+      },
+      {
+        "name": "outfile"
+      }
+    ],
+    "name": "hadd"
+  },
+  "environment": {
+    "definition": {
+      "docker_container": "lukasheinrich/root",
+      "env": null,
+      "resources": [
+        "CVMFS"
+      ]
+    },
+    "schema": "docker_encapsulated"
+  },
+  "outputs": [
+    "output"
+  ],
+  "publisher": {
+    "args": [],
+    "kwargs": {
+      "output": "outfile"
+    },
+    "name": "publishers:from_attributes"
+  },
+  "schema": "cli_app"
+}

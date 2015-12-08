@@ -1,0 +1,59 @@
+strict digraph  {
+	plot	 [attributes="{u'outplotdir': u'{workdir}/plotdir'}",
+		dependencies="[u'merge_ntup']",
+		name=plot,
+		scheduled_nodes="[<Node id: f4202842-9e05-11e5-8d0c-98fe944a88e0 state: SUCCESS>]",
+		scheduler="{u'args': [], u'name': u'schedulers:reduce_from_dep_output', u'kwargs': {u'dependency': u'merge_ntup', u'to_input': u'mergedinput', \
+u'nodename': u'plot_ntup', u'outputkey': u'output'}}",
+		spec=plot_step_spec];
+	hftree	 [attributes="[]",
+		dependencies="[u'ntupling']",
+		name=hftree,
+		scheduled_nodes="[<Node id: f24b823d-9e05-11e5-925d-98fe944a88e0 state: SUCCESS>, <Node id: f24b860f-9e05-11e5-898e-98fe944a88e0 state: SUCCESS>, <\
+Node id: f24b8868-9e05-11e5-bf19-98fe944a88e0 state: SUCCESS>]",
+		scheduler="{u'args': [], u'name': u'schedulers:map_from_dep_output', u'kwargs': {u'outputkey': u'output', u'nodename_template': u'hf_{index}', \
+u'to_output': u'outhf', u'to_input': u'inroot', u'dependency': u'ntupling', u'output_template': u'{workdir}/hf/outhf_{index}.root'}}",
+		spec=hftree_step_spec];
+	merge_hf	 [attributes="{u'outfile': u'{workdir}/merged_hf.root'}",
+		dependencies="[u'hftree']",
+		name=merge_hf,
+		scheduled_nodes="[<Node id: f41fc5a1-9e05-11e5-b35a-98fe944a88e0 state: SUCCESS>]",
+		scheduler="{u'args': [], u'name': u'schedulers:reduce_from_dep_output', u'kwargs': {u'dependency': u'hftree', u'to_input': u'infiles', u'nodename': \
+u'merge', u'outputkey': u'output'}}",
+		spec=merge_step_spec];
+	hftree -> merge_hf;
+	fit	 [attributes="{u'fitresults': u'{workdir}/fitresults.yaml'}",
+		dependencies="[u'merge_hf']",
+		name=fit,
+		scheduled_nodes="[<Node id: f50bf63a-9e05-11e5-a6ba-98fe944a88e0 state: SUCCESS>]",
+		scheduler="{u'args': [], u'name': u'schedulers:reduce_from_dep_output', u'kwargs': {u'dependency': u'merge_hf', u'to_input': u'mergedinput', \
+u'nodename': u'fit', u'outputkey': u'output'}}",
+		spec=fit_step_spec];
+	merge_hf -> fit;
+	merge_ntup	 [attributes="{u'outfile': u'{workdir}/merged_ntup.root'}",
+		dependencies="[u'ntupling']",
+		name=merge_ntup,
+		scheduled_nodes="[<Node id: f24b6599-9e05-11e5-81ed-98fe944a88e0 state: SUCCESS>]",
+		scheduler="{u'args': [], u'name': u'schedulers:reduce_from_dep_output', u'kwargs': {u'dependency': u'ntupling', u'to_input': u'infiles', u'\
+nodename': u'merge_ntp', u'outputkey': u'output'}}",
+		spec=merge_step_spec];
+	merge_ntup -> plot;
+	download	 [attributes="{u'outList': u'{workdir}/files.list', u'inDS': u'{dataset}', u'outDir': u'{workdir}/download'}",
+		dependencies="[]",
+		name=download,
+		scheduled_nodes="[<Node id: efd21866-9e05-11e5-8c7e-98fe944a88e0 state: SUCCESS>]",
+		scheduler="{u'args': [], u'name': u'schedulers:single_node_from_context', u'kwargs': {u'nodename': u'download_node'}}",
+		spec=download_step_spec];
+	ntupling	 [attributes="[]",
+		dependencies="[u'download']",
+		name=ntupling,
+		scheduled_nodes="[<Node id: f09de0a6-9e05-11e5-9728-98fe944a88e0 state: SUCCESS>, <Node id: f09de4ae-9e05-11e5-b1b7-98fe944a88e0 state: SUCCESS>, <\
+Node id: f09de6a8-9e05-11e5-97c9-98fe944a88e0 state: SUCCESS>]",
+		scheduler="{u'args': [], u'name': u'schedulers:map_from_dep_output', u'kwargs': {u'outputkey': u'list_of_files', u'nodename_template': u'ntup_{\
+index}', u'to_output': u'outroot', u'to_input': u'inroot', u'dependency': u'download', u'output_template': u'{workdir}/ntup/out_{\
+index}.root'}}",
+		spec=ntup_step_spec];
+	download -> ntupling;
+	ntupling -> hftree;
+	ntupling -> merge_ntup;
+}

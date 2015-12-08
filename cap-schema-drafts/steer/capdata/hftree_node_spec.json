@@ -1,0 +1,34 @@
+{
+  "definition": {
+    "arguments": [
+      {
+        "name": "inroot"
+      },
+      {
+        "name": "outhf"
+      }
+    ],
+    "name": "./mk_hftree"
+  },
+  "environment": {
+    "definition": {
+      "docker_container": "lukasheinrich/histfitter",
+      "env": null,
+      "resources": [
+        "GRID"
+      ]
+    },
+    "schema": "docker_encapsulated"
+  },
+  "outputs": [
+    "output"
+  ],
+  "publisher": {
+    "args": [],
+    "kwargs": {
+      "output": "outhf"
+    },
+    "name": "publishers:from_attributes"
+  },
+  "schema": "cli_app"
+}
