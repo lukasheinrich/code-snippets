@@ -196,13 +196,16 @@ resources: {resources}
   
   in_docker_host = 'echo $(hostname) > /workdir/{nodename}.hostname && {cmd}'.format(nodename = json['name'], cmd = in_docker_cmd)
 
-  print 'docker run {docker_mod} {container} sh -c \'{in_dock}\''.format(docker_mod = docker_mod, container = container, in_dock = in_docker_host)
+  fullest_command = 'docker run {docker_mod} {container} sh -c \'{in_dock}\''.format(docker_mod = docker_mod, container = container, in_dock = in_docker_host)
+  if do_cvmfs:
+    fullest_command = 'cvmfs_config probe && {}'.format(fullest_command)
 
 
-  return 
+  print '==> workdir {}'.format(global_context['workdir'])
   try:
-    subprocess.check_call('echo docker run -v {0}:/workdir lukasheinrich/testdilepton sh -c \'echo {1} && echo $(hostname) > /workdir/{1}.hostname && {in_docker_cmd}\'  '.format(global_context['workdir'],json['name'],in_docker_cmd = in_docker_cmd), shell = True)
-    subprocess.check_call('echo docker rm $(cat {0}/{1}.hostname)'.format(global_context['workdir'],json['name']), shell = True)
+    subprocess.check_call('docker pull {container}'.format(container = container),shell = True)
+    subprocess.check_call(fullest_command,shell = True)
+    subprocess.check_call('docker rm $(cat {0}/{1}.hostname)'.format(global_context['workdir'],json['name']), shell = True)
   except subprocess.CalledProcessError:
     print 'subprocess failed'
     raise RuntimeError

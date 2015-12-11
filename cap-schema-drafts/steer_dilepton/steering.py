@@ -7,6 +7,7 @@ import adage.dagutils
 import foradage
 import logging
 import subprocess
+import os
 
 def main():
   log = logging.getLogger(__name__)
@@ -17,7 +18,7 @@ def main():
   g = adage.mk_dag()
 
   global_context = {
-    'workdir':'/Users/lukas/Code/code-snippets/cap-schema-drafts/steer',
+    'workdir':'{}/workdir'.format(os.getcwd()),
     'dataset':'mc12_8TeV.220255.MadGraphPythia_AUET2B_CTEQ6L1_pMSSM_EW_108925778_DiLepton.merge.NTUP_SUSY.e3203_a220_a205_r4540_p1512/',
     'efficiency_file':'/workdir/220255.eff',
     'xsections_file':'/workdir/xsections.root',
@@ -38,7 +39,7 @@ def main():
       rule = foradage.RECAST_Rule(stepinfo,workflow,rules,global_context)
       rules[stepname] = rule
 
-  adage.rundag(g,rules.values(), track = True, backend = backend)
+  adage.rundag(g,rules.values(), track = True, backend = backend, trackevery = 30)
 
   provgraph = nx.DiGraph()
   for x in nx.topological_sort(g):
@@ -65,7 +66,15 @@ def main():
         
   nx.write_dot(provgraph,'workflow_instance.dot')
   subprocess.call(['dot','-Tpdf','workflow_instance.dot'], stdout = open('workflow_instance.pdf','w'))
-  nx.write_dot(steps_graph,'steps.dot')
+
+
+  steps_graph_simple = nx.DiGraph()
+  for step in workflow:
+    steps_graph_simple.add_node(step['name'])
+    for x in step['dependencies']:
+      steps_graph_simple.add_edge(x,step['name'])
+
+  nx.write_dot(steps_graph_simple,'steps.dot')
   subprocess.call(['dot','-Tpdf','steps.dot'], stdout = open('steps.pdf','w'))
 
 
