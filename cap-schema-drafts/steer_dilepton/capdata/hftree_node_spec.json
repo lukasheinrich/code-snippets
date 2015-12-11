@@ -1,0 +1,52 @@
+{
+  "definition": {
+    "arguments": [
+      {
+        "name": "script",
+        "default": "preparehistfit.py"
+      },
+      {
+        "name": "miniroot"
+      },
+      {
+        "name": "efficiency_file"
+      },
+      {
+        "name": "xsections_file"
+      },
+      {
+        "name": "modelName"
+      },
+      {
+        "name": "histfittree_file"
+      },
+      {
+        "name": "yield_file"
+      }
+    ],
+    "name": "python"
+  },
+  "environment": {
+    "definition": {
+      "docker_container": "lukasheinrich/dilepton_histfitprep",
+      "env": "/resources/prepareenv.sh",
+      "resources": [
+        "CVMFS"
+      ]
+    },
+    "schema": "docker_encapsulated"
+  },
+  "outputs": [
+    "output_tree",
+    "output_yield"
+  ],
+  "publisher": {
+    "args": [],
+    "kwargs": {
+      "output_tree": "histfittree_file",
+      "output_yield": "yield_file"
+    },
+    "name": "publishers:from_attributes"
+  },
+  "schema": "cli_app"
+}

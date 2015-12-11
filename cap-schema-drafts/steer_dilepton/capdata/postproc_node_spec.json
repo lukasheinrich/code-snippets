@@ -1,0 +1,41 @@
+{
+  "definition": {
+    "arguments": [
+      {
+        "name": "fitresultsarchive"
+      },
+      {
+        "name": "workdir"
+      },
+      {
+        "name": "modelName"
+      },
+      {
+        "name": "resultsyaml"
+      }
+      
+    ],
+    "name": "/resources/pMSSM-TwoLep-Fit/post_fit.sh"
+  },
+  "environment": {
+    "definition": {
+      "docker_container": "lukasheinrich/dilepton_fit",
+      "env": null,
+      "resources": [
+        "CVMFS"
+      ]
+    },
+    "schema": "docker_encapsulated"
+  },
+  "outputs": [
+    "output"
+  ],
+  "publisher": {
+    "args": [],
+    "kwargs": {
+      "output": "resultsyaml"
+    },
+    "name": "publishers:from_attributes"
+  },
+  "schema": "cli_app"
+}

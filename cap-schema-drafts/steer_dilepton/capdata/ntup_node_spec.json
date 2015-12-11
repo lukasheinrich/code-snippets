@@ -1,0 +1,59 @@
+{
+  "definition": {
+    "arguments": [],
+    "options": [
+      {
+        "name":"-m",
+        "description":"minintuple"
+      },
+      {
+        "name":"-maxsyst",
+        "description":"maxsyst"
+      },
+      {
+        "name":"-f",
+        "description":"filelist"
+      }
+    ],
+    "flags": [
+      {
+        "name":"input_type",
+        "allowed_values": ["-mc",null]
+      },
+      {
+        "name":"filter",
+        "allowed_values": ["-nomllalpgenfilter",null]
+      },
+      {
+        "name":"include_truth",
+        "allowed_values": ["-truth",null]
+      },
+      {
+        "name":"blinded",
+        "allowed_values": ["-blind","-unblind"]
+      }
+    ],
+    "name": "./DileptonAnalysis"
+  },
+  "environment": {
+    "definition": {
+      "docker_container": "lukasheinrich/dilepton_ntupling",
+      "env": "/resources/ntuplingenv.sh",
+      "resources": [
+        "CVMFS"
+      ]
+    },
+    "schema": "docker_encapsulated"
+  },
+  "outputs": [
+    "output"
+  ],
+  "publisher": {
+    "args": [],
+    "kwargs": {
+      "output": "minintuple"
+    },
+    "name": "publishers:from_attributes"
+  },
+  "schema": "cli_app"
+}

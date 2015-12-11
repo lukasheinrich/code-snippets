@@ -1,0 +1,38 @@
+{
+  "definition": {
+    "arguments": [
+      {
+        "name": "dataset"
+      },
+      {
+        "name": "outDir"
+      },
+      {
+        "name": "outList"
+      }
+    ],
+    "name": "/resources/download.py"
+  },
+  "environment": {
+    "definition": {
+      "docker_container": "lukasheinrich/dilepton_download",
+      "env": "/resources/downloadenv.sh",
+      "resources": [
+        "GRID",
+        "CVMFS"
+      ]
+    },
+    "schema": "docker_encapsulated"
+  },
+  "outputs": [
+    "list_of_files"
+  ],
+  "publisher": {
+    "args": [],
+    "kwargs": {
+      "output": "outList"
+    },
+    "name": "publishers:from_attributes"
+  },
+  "schema": "cli_app"
+}

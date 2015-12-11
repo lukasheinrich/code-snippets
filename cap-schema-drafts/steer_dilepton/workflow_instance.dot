@@ -1,0 +1,46 @@
+strict digraph  {
+	node [label="\N"];
+	"a3ca46e8-a017-11e5-8a0c-98fe944a88e0"	 [color=red,
+		label=fit,
+		nodeobj="<Node id: a3ca46e8-a017-11e5-8a0c-98fe944a88e0 state: SUCCESS>"];
+	output_fit_output_0	 [color=blue,
+		label=output_0,
+		shape=box];
+	"a3ca46e8-a017-11e5-8a0c-98fe944a88e0" -> output_fit_output_0;
+	output_download_node_output_0	 [color=blue,
+		label=output_0,
+		shape=box];
+	"a23ccf6b-a017-11e5-88ad-98fe944a88e0"	 [color=red,
+		label=ntupling,
+		nodeobj="<Node id: a23ccf6b-a017-11e5-88ad-98fe944a88e0 state: SUCCESS>"];
+	output_download_node_output_0 -> "a23ccf6b-a017-11e5-88ad-98fe944a88e0";
+	output_postproc_output_0	 [color=blue,
+		label=output_0,
+		shape=box];
+	"a49245bd-a017-11e5-9bfa-98fe944a88e0"	 [color=red,
+		label=postproc,
+		nodeobj="<Node id: a49245bd-a017-11e5-9bfa-98fe944a88e0 state: SUCCESS>"];
+	output_fit_output_0 -> "a49245bd-a017-11e5-9bfa-98fe944a88e0";
+	"a30382d7-a017-11e5-9eff-98fe944a88e0"	 [color=red,
+		label=histfitprepare,
+		nodeobj="<Node id: a30382d7-a017-11e5-9eff-98fe944a88e0 state: SUCCESS>"];
+	output_histfitprepare_output_tree_0	 [color=blue,
+		label=output_tree_0,
+		shape=box];
+	"a30382d7-a017-11e5-9eff-98fe944a88e0" -> output_histfitprepare_output_tree_0;
+	output_histfitprepare_output_yield_0	 [color=blue,
+		label=output_yield_0,
+		shape=box];
+	"a30382d7-a017-11e5-9eff-98fe944a88e0" -> output_histfitprepare_output_yield_0;
+	output_histfitprepare_output_tree_0 -> "a3ca46e8-a017-11e5-8a0c-98fe944a88e0";
+	"a49245bd-a017-11e5-9bfa-98fe944a88e0" -> output_postproc_output_0;
+	"a1784411-a017-11e5-9063-98fe944a88e0"	 [color=red,
+		label=download_node,
+		nodeobj="<Node id: a1784411-a017-11e5-9063-98fe944a88e0 state: SUCCESS>"];
+	"a1784411-a017-11e5-9063-98fe944a88e0" -> output_download_node_output_0;
+	output_ntupling_output_0	 [color=blue,
+		label=output_0,
+		shape=box];
+	output_ntupling_output_0 -> "a30382d7-a017-11e5-9eff-98fe944a88e0";
+	"a23ccf6b-a017-11e5-88ad-98fe944a88e0" -> output_ntupling_output_0;
+}

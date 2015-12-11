@@ -1,0 +1,113 @@
+[
+  {
+    "spec": "download_step_spec",
+    "name": "download",
+    "dependencies": [],
+    "attributes": {
+      "dataset": "{dataset}",
+      "outDir": "/workdir/grid_download",
+      "outList": "/workdir/files.list"
+    },
+    "scheduler": {
+      "name": "schedulers:single_node_from_context",
+      "args": [],
+      "kwargs": {
+        "nodename": "download_node"
+      }
+    }
+  },
+  {
+    "spec": "ntup_step_spec",
+    "name": "ntupling",
+    "attributes": {
+      "minintuple": "/workdir/mini.root",
+      "maxsyst": "1",
+      "input_type":"-mc",
+      "filter":"-nomllalpgenfilter",
+      "blinded":"-unblind",
+      "include_truth":"-truth"
+    },
+    "dependencies": [
+      "download"
+    ],
+    "scheduler": {
+      "args": [],
+      "kwargs": {
+        "dependency": "download",
+        "nodename": "ntupling",
+        "outputkey": "output",
+        "to_input": "filelist"
+      },
+      "name": "schedulers:reduce_from_dep_output"
+    }
+  },
+  {
+    "spec": "hftree_step_spec",
+    "name": "histfitprepare",
+    "attributes": {
+      "efficiency_file":"{efficiency_file}",
+      "xsections_file":"{xsections_file}",
+      "modelName":"{modelName}",
+      "histfittree_file":"/workdir/out.root",
+      "yield_file": "/workdir/out.yield"
+    },
+    "dependencies": [
+      "ntupling"
+    ],
+    "scheduler": {
+      "args": [],
+      "kwargs": {
+        "dependency": "ntupling",
+        "nodename": "histfitprepare",
+        "outputkey": "output",
+        "to_input": "miniroot"
+      },
+      "name": "schedulers:reduce_from_dep_output"
+    }
+  },
+  {
+    "spec": "fit_step_spec",
+    "name": "fit",
+    "attributes": {
+      "histfitroot":"/workdir/out.root",
+      "fitresults":"/workdir/fit.tgz"
+    },
+    "dependencies": [
+      "histfitprepare"
+    ],
+    "scheduler": {
+      "args": [],
+      "kwargs": {
+        "dependency": "histfitprepare",
+        "nodename": "fit",
+        "outputkey": "output_tree",
+        "to_input": "histfitroot"
+      },
+      "name": "schedulers:reduce_from_dep_output"
+    }
+  },
+  {
+    "spec": "postproc_step_spec",
+    "name": "postproc",
+    "attributes": {
+      "workdir":"/workdir/postproc",
+      "modelName":"{modelName}",
+      "resultsyaml":"/workdir/results.yaml"
+    },
+    "dependencies": [
+      "fit"
+    ],
+    "scheduler": {
+      "args": [],
+      "kwargs": {
+        "dependency": "fit",
+        "nodename": "postproc",
+        "outputkey": "output",
+        "to_input": "fitresultsarchive"
+      },
+      "name": "schedulers:reduce_from_dep_output"
+    }
+  }
+  
+  
+]

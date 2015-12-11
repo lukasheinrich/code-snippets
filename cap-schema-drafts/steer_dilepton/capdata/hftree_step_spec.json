@@ -1,0 +1,6 @@
+{
+  "definition": {
+    "node_spec": "hftree_node_spec"
+  },
+  "schema": "single_node_step"
+}

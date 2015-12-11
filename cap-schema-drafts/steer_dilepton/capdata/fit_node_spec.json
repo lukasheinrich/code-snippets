@@ -1,0 +1,34 @@
+{
+  "definition": {
+    "arguments": [
+      {
+        "name": "histfitroot"
+      },
+      {
+        "name": "fitresults"
+      }
+    ],
+    "name": "./luke_run_limit.sh"
+  },
+  "environment": {
+    "definition": {
+      "docker_container": "lukasheinrich/dilepton_fit",
+      "env": "/resources/fitenv.sh",
+      "resources": [
+        "CVMFS"
+      ]
+    },
+    "schema": "docker_encapsulated"
+  },
+  "outputs": [
+    "output"
+  ],
+  "publisher": {
+    "args": [],
+    "kwargs": {
+      "output": "fitresults"
+    },
+    "name": "publishers:from_attributes"
+  },
+  "schema": "cli_app"
+}
