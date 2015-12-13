@@ -205,8 +205,10 @@ resources: {resources}
   try:
     subprocess.check_call('docker pull {container}'.format(container = container),shell = True)
     subprocess.check_call(fullest_command,shell = True)
-    subprocess.check_call('docker rm $(cat {0}/{1}.hostname)'.format(global_context['workdir'],json['name']), shell = True)
   except subprocess.CalledProcessError:
     print 'subprocess failed'
     raise RuntimeError
+  finally:
+    subprocess.check_call('docker stop $(cat {0}/{1}.hostname)'.format(global_context['workdir'],json['name']), shell = True)
+    subprocess.check_call('docker rm $(cat {0}/{1}.hostname)'.format(global_context['workdir'],json['name']), shell = True)
   
