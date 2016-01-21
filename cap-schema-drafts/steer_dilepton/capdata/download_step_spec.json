@@ -1,6 +1,0 @@
-{
-  "definition": {
-    "node_spec": "download_node_spec"
-  },
-  "schema": "single_node_step"
-}
