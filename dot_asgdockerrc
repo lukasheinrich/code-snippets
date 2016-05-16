@@ -1,0 +1,11 @@
+asg_docker_init() {
+    docker-machine create $1 --driver virtualbox
+    eval $(docker-machine env $1)
+    docker pull lukasheinrich/atlas-athanalysisbase-2.4.8
+}
+asg_docker() {
+    eval $(docker-machine env $1)
+    xhost + $(docker-machine ip $1)
+    MYIP=$(ifconfig vboxnet1|grep inet|awk '{print $2}')
+    docker run --rm -it -v $2:/analysis -e DISPLAY=$MYIP:0 lukasheinrich/atlas-athanalysisbase-2.4.8 bash
+}
