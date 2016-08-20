@@ -7,6 +7,15 @@ app = Flask(__name__)
 app.secret_key = 'secret'
 config = json.load(open('config.json'))
 
+#{
+#"APPID":"<appid>",
+#"MYHOST":"<this host>",
+#"REDIRECT_ROUTE":"<call back route registered with auth service>",
+#"SECRET":"<secret>",
+#"TOKENURL":"https://oauth.web.cern.ch/OAuth/Token",
+#"AUTHORIZEURL":"https://oauth.web.cern.ch/OAuth/Authorize"
+}
+
 oauth = OAuth()
 oauth_app = oauth.remote_app('oauth_app',
     base_url=None,
