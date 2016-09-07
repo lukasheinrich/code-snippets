@@ -1,0 +1,3 @@
+g++ -c -o header.o header.cpp
+g++ -shared -flat_namespace -o header.so header.o
+g++ -o main main.cpp
