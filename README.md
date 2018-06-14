@@ -1,4 +1,4 @@
 code-snippets
 =============
 
-just random little code snippets, test programs to check functionality
+just random little code snippets, test programs to check functionality.
